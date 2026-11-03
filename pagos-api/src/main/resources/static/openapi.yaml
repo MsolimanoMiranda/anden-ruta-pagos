@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: Ruta de pagos
+  version: 1.0.0
+  description: Cobros idempotentes. El mismo Idempotency-Key devuelve el cobro original.
+paths:
+  /auth/token:
+    post:
+      summary: Token de demostración (client_id ruta, secret oficio)
+      responses:
+        "200":
+          description: JWT
+  /cobros:
+    post:
+      summary: Cobra una vez por clave
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Cobro aceptado
+        "401":
+          description: Falta el token
+        "422":
+          description: Regla de negocio
+  /salud:
+    get:
+      summary: Salud del servicio
+      responses:
+        "200":
+          description: ok
